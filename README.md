@@ -4,9 +4,9 @@ Test project #2 for reproducing SC Brixton.SR3 issues with Hystrix.
 ## Reproducing Issue
 
 * Clone https://github.com/hecklerm/bootiful-microservices-config (to feed the config server) and next four projects listed below
-* Run SR3Hystrix_ConfigService from within IntelliJ
-* Run SR3Hystrix_EurekaService from within IntelliJ
-* Run SR3Hystrix_QuoteService from within IntelliJ
+* Run SR3Hystrix_ConfigService (https://github.com/hecklerm/SR3Hystrix_ConfigService) from within IntelliJ
+* Run SR3Hystrix_EurekaService (https://github.com/hecklerm/S3Hystrix_EurekaService) from within IntelliJ
+* Run SR3Hystrix_QuoteService (https://github.com/hecklerm/SR3Hystrix_QuoteService) from within IntelliJ
 * Run this project (SR3Hystrix_EdgeService) from within IntelliJ
 * Go to http://localhost:8086/quote to use Zuul proxy to hit local (edge-service) endpoint that, via a @LoadBalanced RestTemplate @Bean referencing quote-service by name (Eureka lookup), accesses the quote-service's /random endpoint. This is convoluted, but it falls within documented uses and demonstrates several interactions among the Netflix components (Zuul, Eureka, Hystrix, & behind the scenes, Ribbon). Refresh a few times to see that verify random quote is being returned each call (may or may not be different, after all, it's random)  ;)
 * Kill quote-service (SR3Hystrix_QuoteService)
