@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableZuulProxy
-//@EnableBinding(Source.class)
 public class EdgeServiceApplication {
     @LoadBalanced
     @Bean
@@ -31,9 +30,6 @@ public class EdgeServiceApplication {
 @RestController
 @RefreshScope
 class QuoteController {
-//    @Autowired
-//    Source source;
-
     @Autowired
     RestTemplate restTemplate;
 
@@ -49,11 +45,6 @@ class QuoteController {
     public Quote getDefaultQuote() {
         return new Quote(defaultQuote, "Me");
     }
-
-//    @RequestMapping(value="/newquote", method=RequestMethod.POST)
-//    public void acceptNewQuote(@RequestBody Quote quote) {
-//        this.source.output().send(MessageBuilder.withPayload(quote).build);
-//    }
 }
 
 class Quote {
