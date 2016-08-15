@@ -3,19 +3,22 @@ Test project #2 for reproducing SC Brixton.SR3 issues with Hystrix.
 
 ## Reproducing Issue
 
-. Run LOTE_ConfigService
-. Run LOTE_EurekaService
-. Run test project #1 (SR3Hystrix_QuoteService)
-. Run this project
-. Kill quote-service (test project #1 above, SR3Hystrix_QuoteService)
-. Update entry for quote in edge-service.properties (bootiful-microservices-config feeds the config-service)
-. git commit -a -m "Changed quote"
-. From terminal, curl -d{} localhost:8086/refresh
-. Verify updated quote provided by edge-service
-. Restart quote-service
-. If running SR3, wait as long as you like; the circuit never closes (at least it didn't on my machine)
+* Clone https://github.com/hecklerm/bootiful-microservices-config (to feed the config server) and next four projects listed below
+* Run SR3Hystrix_ConfigService from within IntelliJ
+* Run SR3Hystrix_EurekaService from within IntelliJ
+* Run SR3Hystrix_QuoteService from within IntelliJ
+* Run this project (SR3Hystrix_EdgeService) from within IntelliJ
+* Go to http://localhost:8086/quote to use Zuul proxy to hit local (edge-service) endpoint that, via a @LoadBalanced RestTemplate @Bean referencing quote-service by name (Eureka lookup), accesses the quote-service's /random endpoint. This is convoluted, but it falls within documented uses and demonstrates several interactions among the Netflix components (Zuul, Eureka, Hystrix, & behind the scenes, Ribbon). Refresh a few times to see that verify random quote is being returned each call (may or may not be different, after all, it's random)  ;)
+* Kill quote-service (SR3Hystrix_QuoteService)
+* Refresh browser to see that the Hystrix fallbackMethod is being hit, a new Quote is being created from edge-service.properties' quote property (defined at bottom of file)
+* Update the entry for quote in edge-service.properties and save the file
+* git commit -a -m "Changed quote"
+* Go to http://localhost:8086/quote to demonstrate that the bean value hasn't yet been refreshed (still original edge-service.properties quote, buffered)
+* From the terminal, curl -d{} localhost:8086/refresh to force a bean refresh
+* Go to http://localhost:8086/quote to verify updated quote is now provided by edge-service
+* Restart quote-service
+* Go to http://localhost:8086/quote to verify that the circuit never closes (duplicated on two machines, but only if this exact sequence is followed)
 
-Changing the edge-service POM to use Brixton.RELEASE eliminates the issue. I haven't yet tested with SR1 or SR2.
+NOTE: If I remove the HATEOAS dep, everything seems to work properly, even with the same sequence of steps/events.
 
-It's quite possible the config change & refresh contribute nothing to the discussion, but I included them for completeness, as these are the steps I was executing.
-
+Please ping me with any questions. Happy to pair to demonstrate if desired.
