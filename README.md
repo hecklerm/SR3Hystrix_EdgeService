@@ -4,7 +4,7 @@ Test project #2 for reproducing SC Brixton.SR3 issues with Hystrix.
 ## Reproducing Issue
 
 * Clone https://github.com/hecklerm/bootiful-microservices-config (to feed the config server) and next four projects listed below
-* Run SR3Hystrix_ConfigService (https://github.com/hecklerm/SR3Hystrix_ConfigService) from within IntelliJ
+* Update SR3Hystrix_ConfigService's application.properties with location of config properties files (above) & run SR3Hystrix_ConfigService (https://github.com/hecklerm/SR3Hystrix_ConfigService) from within IntelliJ
 * Run SR3Hystrix_EurekaService (https://github.com/hecklerm/S3Hystrix_EurekaService) from within IntelliJ
 * Run SR3Hystrix_QuoteService (https://github.com/hecklerm/SR3Hystrix_QuoteService) from within IntelliJ
 * Run this project (SR3Hystrix_EdgeService) from within IntelliJ
