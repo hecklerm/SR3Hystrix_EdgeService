@@ -14,10 +14,10 @@ Test project #2 for reproducing SC Brixton.SR3 issues with Hystrix.
 * Update the entry for quote in edge-service.properties and save the file
 * git commit -a -m "Changed quote"
 * Go to http://localhost:8086/quote to demonstrate that the bean value hasn't yet been refreshed (still original edge-service.properties quote, buffered)
-* From the terminal, curl -d{} localhost:8086/refresh to force a bean refresh
+* From the terminal, curl -d{} localhost:8086/refresh to force a bean refresh in the edge-service
 * Go to http://localhost:8086/quote to verify updated quote is now provided by edge-service
 * Restart quote-service
-* Go to http://localhost:8086/quote to verify that the circuit never closes (duplicated on two machines, but only if this exact sequence is followed)
+* Go to http://localhost:8086/quote to verify that the circuit never closes and the (now refreshed) edge-service.properties' quote is always being served by the edge-service...never restoring access to the quote-service. (duplicated on two machines, but only if this exact sequence is followed)
 
 NOTE: If I remove the HATEOAS dep, everything seems to work properly, even with the same sequence of steps/events.
 
